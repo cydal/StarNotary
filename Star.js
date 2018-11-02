@@ -8,6 +8,7 @@ const bitcoinMessage = require("bitcoinjs-message");
 const VALIDATION_WINDOW = 300;
 
 /**
+ * 
  * Star class to handle star functions
  */
 class Star {
@@ -125,21 +126,15 @@ class Star {
     /**
      *  Check address on system
      */
+
+
     async isValid(req) {
-        return new Promise((resolve, reject) => {
-            db.get(req.body.address, (err, value) => {
-                
-                if (value === undefined) {
-                    return reject(new Error("Address not authorized"));
-                } else if (err) {
-                    return reject(err);
-                }
-
-                value = JSON.parse(value);
-
-                return value.messageSignature === 'valid';
-            })
-        });
+        return db.get(req.body.address).then((value) => {
+            value = JSON.parse(value);
+            return value.messageSignature === 'valid';
+        }).catch(() => {
+            throw new Error("Address not Validated");
+        })
     }
 
     /**

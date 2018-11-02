@@ -18,6 +18,7 @@ app.use(bodyParser.json());
 const MAX_STORY = 500;
 
 
+
 app.listen(port, () => {
     console.log('App listening on port ' + port);
 });
@@ -142,7 +143,10 @@ app.post('/block', async (req, res) => {
 
     try {
 
-        if (await !starValidation.isValid(req)) {
+        const valid = await starValidation.isValid(req);
+
+        
+        if (!valid) {
             throw new Error("Signature is invalid");
         }
 
@@ -151,6 +155,8 @@ app.post('/block', async (req, res) => {
             "status": 400,
             "message": "Block Error - " + err.message
         });
+
+        return
     }
 
 
