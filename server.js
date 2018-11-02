@@ -82,6 +82,11 @@ const validateStarRequest = (req) => {
    if (!/^[\x00-\x7F]*$/.test(story)) {
        throw new Error("Story must only contain ASCII ccharaters");
    }
+
+   //Check story does not exceed 500bytes
+   if (new Buffer(story).length > MAX_STORY) {
+       throw new Error("Story must not exceed 500bytes");
+   }
 }
 
 app.get('/block/:height', async (req, res) => {
